@@ -1,0 +1,30 @@
+# Example build script to create a Docker image from a .NET Core 2.0 Web Api app.
+steps:
+
+# .NET Core 2.0 by default restores before any build, so we can
+# combine the restore and publish operations in a single statement.
+- name: 'gcr.io/cloud-builders/dotnet'
+  args: [ 'publish', '-c', 'Release' ]
+
+# Build the app image.
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/testapp:latest', '-t', 'gcr.io/$PROJECT_ID/testapp:$SHORT_SHA', '.' ]
+  dir: './bin/Release/netcoreapp2.0/publish'
+
+- id: 'Apply changes to k8s.yaml'
+  name: 'ubuntu'
+  args: [
+        'sed', '-i',
+        's|gcr.io/$PROJECT_ID/$_IMAGE_NAME:.*|gcr.io/$PROJECT_ID/$_IMAGE_NAME:$SHORT_SHA|g',
+        'k8s.yaml'
+  ]
+
+- id: 'Kubectl apply'
+  name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'k8s.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=$_ZONE'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER'  
+
+# Publish the app.
+images: [ 'gcr.io/$PROJECT_ID/testapp' ]

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dn-hello-world-svc
+  labels:
+    app: dn-hello-world
+    tier: dev
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 5000
+  selector:
+    app: dn-hello-world
+    tier: dev
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dn-hello-world
+  labels:
+    app: dn-hello-world
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dn-hello-world
+        tier: dev
+    spec:
+      containers:
+      - name:  dn-hello-world
+        image: gcr.io/kenthua-testing/testapp:latest
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 25
+          periodSeconds: 5
