@@ -50,12 +50,12 @@ export PROJECT_ID=<YOUR_PROJECT_ID>
 
 Replace PROJECT_ID
 ```
-sed -i "s/##PROJECT_ID##/${PROJECT_ID}/g" k8s.yaml
+sed -i "s/##PROJECT_ID##/${PROJECT_ID}/g" k8s/k8s.yaml
 ```
 
 Deploy onto your kubernetes instance
 ``` 
-kubectl apply -f k8s.yaml
+kubectl apply -f k8s/k8s.yaml
 ```
 
 ## Force k8s to rollout new image
