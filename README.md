@@ -1,4 +1,4 @@
-Leveraging the sample spring-boot java hello world app from the container builder examples, deploy the app in GKE
+Leveraging the sample dotnet value app from the container builder examples, deploy the app in GKE
 
 ## Getting started
 Enable the appropriate APIs
@@ -25,7 +25,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_NUMBER} \
 
 Create a cluster
 ```
-gcloud container clusters create cb-cluster
+gcloud container clusters create test-cluster
 ```
 
 Fork this repo
@@ -36,6 +36,12 @@ Associate your forked repo with [GC Source Repositories](https://cloud.google.co
   * Provide a name
   * Trigger Type: `branch`
   * Build configuration: `cloudbuild.yaml`
+  * Substitution Variables:
+  ```
+  _IMAGE_NAME = test-app
+  _ZONE = us-central1-a
+  _CLUSTER = test-cluster
+  ```
 
 ## Deployment
 ```
@@ -54,14 +60,14 @@ kubectl apply -f k8s.yaml
 
 ## Force k8s to rollout new image
 ```
-gcloud container images list-tags gcr.io/$PROJECT_ID/spring-boot
+gcloud container images list-tags gcr.io/$PROJECT_ID/testapp
 ```
 Copy the short sha tag
 ```
-kubectl set image deployment/sb-hello-world sb-hello-wolrd=gcr.io/$PROJECT_ID/spring-boot:$YOUR_SHORT_SHA_TAG
+kubectl set image deployment/dn-hello-world dn-hello-wolrd=gcr.io/$PROJECT_ID/testapp:$YOUR_SHORT_SHA_TAG
 ```
 
 ## Cleanup
 ```
-kubectl delete all -l app=sb-hello-world
+kubectl delete all -l app=dn-hello-world
 ```
