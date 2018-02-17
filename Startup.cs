@@ -24,6 +24,11 @@ namespace TestApp_2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Hello World!");
+            });
         }
         /*
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,10 +49,6 @@ namespace TestApp_2._0
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
         }        
     }
 }
