@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TestApp_2._0
 {
+    /*
     public class Program
     {
         public static void Main(string[] args)
@@ -27,4 +28,19 @@ namespace TestApp_2._0
                 })                
                 .Build();
     }
+    */
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
+    }    
 }
