@@ -20,6 +20,11 @@ namespace TestApp_2._0
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .Configure(app =>
+                {
+                    app.Run(context => 
+                        context.Response.WriteAsync("Hello, World!"));
+                })                
                 .Build();
     }
 }
