@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TestApp_2._0.Controllers
 {
-    [Route("/[controller]")]
+    [Route("/")]
     public class ValuesController : Controller
     {
         // GET api/values
