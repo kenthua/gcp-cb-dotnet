@@ -37,13 +37,13 @@ spec:
           value: dns
         readinessProbe:
           httpGet:
-            path: /api/values
+            path: /
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /api/values
+            path: /
             port: 8080
           initialDelaySeconds: 10
           periodSeconds: 5
